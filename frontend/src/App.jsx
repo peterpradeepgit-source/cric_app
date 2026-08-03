@@ -20,7 +20,7 @@ const TABS = [
   { key: "recent", label: "Recent" },
 ];
 
-const LIVE_REFRESH_MS = 3000;
+const LIVE_REFRESH_MS = 30000;
 
 function Spinner() {
   return (
