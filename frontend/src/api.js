@@ -1,4 +1,4 @@
-const BASE_URL = '/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
 async function fetchJSON(path) {
   const res = await fetch(`${BASE_URL}${path}`);
@@ -7,15 +7,15 @@ async function fetchJSON(path) {
 }
 
 export function getLiveMatches() {
-  return fetchJSON('/matches/live');
+  return fetchJSON("/matches/live");
 }
 
 export function getUpcomingMatches() {
-  return fetchJSON('/matches/upcoming');
+  return fetchJSON("/matches/upcoming");
 }
 
 export function getRecentMatches() {
-  return fetchJSON('/matches/recent');
+  return fetchJSON("/matches/recent");
 }
 
 export function getMatchById(id) {
