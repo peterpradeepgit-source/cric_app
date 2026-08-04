@@ -1,0 +1,7 @@
+export default function Spinner() {
+  return (
+    <div className="flex justify-center py-16" role="status" aria-label="Loading">
+      <div className="w-8 h-8 border-2 border-cbaccent/30 border-t-cbaccent rounded-full animate-spin" />
+    </div>
+  );
+}
