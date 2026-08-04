@@ -1,6 +1,8 @@
-import { ballsToOvers } from "../../utils/scorecard";
+import { ballsToOvers, getBowlersWithOvers } from "../../utils/scorecard";
 
 export default function BowlingTable({ rows }) {
+  const bowlersWithOvers = getBowlersWithOvers(rows);
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-xs sm:text-sm">
@@ -17,7 +19,7 @@ export default function BowlingTable({ rows }) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((b, i) => (
+          {bowlersWithOvers.map((b, i) => (
             <tr
               key={`${b.bowler}-${i}`}
               className="border-b border-gray-800/40 hover:bg-white/5"

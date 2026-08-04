@@ -30,8 +30,12 @@ describe("MatchDetailPage", () => {
     render(<MatchDetailPage loading match={match} onBack={vi.fn()} />);
 
     expect(
+      screen.getByRole("status", { name: "Loading match summary" }),
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole("status", { name: "Loading scorecard" }),
     ).toBeInTheDocument();
+    expect(screen.queryByText("Border Trophy")).not.toBeInTheDocument();
     expect(
       screen.queryByText("Scorecard not available for this match."),
     ).not.toBeInTheDocument();

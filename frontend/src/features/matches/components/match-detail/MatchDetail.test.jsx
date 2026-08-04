@@ -98,7 +98,7 @@ describe("MatchDetail", () => {
 
     expect(onBack).toHaveBeenCalledTimes(1);
     expect(screen.getByText("Champions Trophy")).toBeInTheDocument();
-    expect(screen.getByText("Current Players")).toBeInTheDocument();
+    expect(screen.getByText("Now Playing")).toBeInTheDocument();
     expect(screen.getAllByText("245-6 (48)").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Toss: India chose to bat")).toBeInTheDocument();
     expect(screen.getByText("Extras: 12")).toBeInTheDocument();

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMatchById } from "../../../api";
+import { LIVE_REFRESH_MS } from "../constants";
 
 export default function useMatchDetail(matchId, previewMatch) {
   const [selectedMatch, setSelectedMatch] = useState(previewMatch);
@@ -34,6 +35,24 @@ export default function useMatchDetail(matchId, previewMatch) {
       active = false;
     };
   }, [matchId, previewMatch]);
+
+  useEffect(() => {
+    if (!matchId || selectedMatch?.status !== "live") return undefined;
+
+    let active = true;
+    const id = setInterval(() => {
+      getMatchById(matchId)
+        .then((full) => {
+          if (active) setSelectedMatch(full);
+        })
+        .catch(() => {});
+    }, LIVE_REFRESH_MS);
+
+    return () => {
+      active = false;
+      clearInterval(id);
+    };
+  }, [matchId, selectedMatch?.status]);
 
   return {
     detailError,

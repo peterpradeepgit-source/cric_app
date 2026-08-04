@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
   ballsToOvers,
+  getBowlersWithOvers,
   getDisplayInnings,
+  getInningsScore,
   getLiveCurrentPlayers,
   sortBattersByState,
 } from "./scorecard";
@@ -116,5 +118,54 @@ describe("scorecard helpers", () => {
         },
       }),
     ).toEqual({ batters: [], bowler: null });
+  });
+
+  it("prefers the match-level score for a matching innings team", () => {
+    const innings = {
+      batting_team: "IDream Tiruppur Tamizhans",
+      runs: 31,
+      wickets: 2,
+      overs: 2.2,
+    };
+
+    expect(
+      getInningsScore(innings, [
+        {
+          team: "IDream Tiruppur Tamizhans",
+          runs: 38,
+          wickets: 3,
+          overs: 3,
+        },
+      ]),
+    ).toEqual({
+      team: "IDream Tiruppur Tamizhans",
+      runs: 38,
+      wickets: 3,
+      overs: 3,
+    });
+  });
+
+  it("falls back to innings totals when no match-level score exists", () => {
+    const innings = {
+      batting_team: "India",
+      runs: 180,
+      wickets: 6,
+      overs: 20,
+    };
+
+    expect(getInningsScore(innings, [])).toBe(innings);
+  });
+
+  it("keeps only bowlers who have bowled at least one ball", () => {
+    const rows = [
+      { bowler: "Used Bowler", balls: 6 },
+      { bowler: "Current But No Ball Yet", balls: 0, is_bowling: true },
+      { bowler: "Partial Over Bowler", balls: 2 },
+    ];
+
+    expect(getBowlersWithOvers(rows).map((bowler) => bowler.bowler)).toEqual([
+      "Used Bowler",
+      "Partial Over Bowler",
+    ]);
   });
 });

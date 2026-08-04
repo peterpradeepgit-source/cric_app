@@ -47,6 +47,39 @@ describe("ScorecardSection", () => {
     expect(screen.getByText("180-6 (20)")).toBeInTheDocument();
   });
 
+  it("uses the match summary score when scorecard innings totals are stale", () => {
+    render(
+      <ScorecardSection
+        match={{
+          status: "live",
+          scores: [
+            {
+              team: "IDream Tiruppur Tamizhans",
+              runs: 38,
+              wickets: 3,
+              overs: 3,
+            },
+          ],
+          scorecard: {
+            innings: [
+              {
+                batting_team: "IDream Tiruppur Tamizhans",
+                runs: 31,
+                wickets: 2,
+                overs: 2.2,
+                batting: [],
+                bowling: [],
+              },
+            ],
+          },
+        }}
+      />,
+    );
+
+    expect(screen.getByText("38-3 (3)")).toBeInTheDocument();
+    expect(screen.queryByText("31-2 (2.2)")).not.toBeInTheDocument();
+  });
+
   it("renders the second innings first for live scorecards", () => {
     render(
       <ScorecardSection

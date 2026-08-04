@@ -40,6 +40,18 @@ export function getLiveCurrentPlayers(match) {
   };
 }
 
+export function getInningsScore(innings, scores = [], inningsIndex = 0) {
+  return (
+    scores.find((score) => score.team && score.team === innings.batting_team) ||
+    scores[inningsIndex] ||
+    innings
+  );
+}
+
+export function getBowlersWithOvers(rows = []) {
+  return rows.filter((bowler) => bowler.balls > 0);
+}
+
 function getCurrentBatters(rows) {
   const activeBatters = rows
     .filter((player) => !player.is_out && (player.is_batting || player.balls > 0))

@@ -63,7 +63,7 @@ describe("CurrentPlayersCard", () => {
   it("shows current live batters with the active batter first", () => {
     render(<CurrentPlayersCard match={liveMatch} />);
 
-    const card = screen.getByText("Current Players").closest("section");
+    const card = screen.getByText("Now Playing").closest("section");
     const batterNames = within(card).getAllByText(/Striker|Non Striker/);
 
     expect(batterNames.map((node) => node.textContent)).toEqual([
@@ -79,6 +79,37 @@ describe("CurrentPlayersCard", () => {
 
     expect(screen.getByText("Current Bowler")).toBeInTheDocument();
     expect(screen.getByText("2.5-0-21-2")).toBeInTheDocument();
+  });
+
+  it("shows the current bowler even before they complete an over", () => {
+    render(
+      <CurrentPlayersCard
+        match={{
+          ...liveMatch,
+          scorecard: {
+            innings: [
+              liveMatch.scorecard.innings[0],
+              {
+                ...liveMatch.scorecard.innings[1],
+                bowling: [
+                  {
+                    bowler: "New Spell Bowler",
+                    balls: 0,
+                    maidens: 0,
+                    runs: 0,
+                    wickets: 0,
+                    is_bowling: true,
+                  },
+                ],
+              },
+            ],
+          },
+        }}
+      />,
+    );
+
+    expect(screen.getByText("New Spell Bowler")).toBeInTheDocument();
+    expect(screen.getByText("0-0-0-0")).toBeInTheDocument();
   });
 
   it("does not render for non-live matches", () => {

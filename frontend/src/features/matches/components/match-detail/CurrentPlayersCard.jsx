@@ -44,7 +44,7 @@ export default function CurrentPlayersCard({ match }) {
   return (
     <section className="bg-cbcard rounded-xl p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-sm font-bold text-white">Current Players</h2>
+        <h2 className="text-sm font-bold text-white">Now Playing</h2>
         <span className="text-xs font-bold uppercase tracking-wide text-red-400">
           Live
         </span>

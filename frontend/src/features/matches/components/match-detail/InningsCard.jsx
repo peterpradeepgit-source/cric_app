@@ -2,13 +2,19 @@ import { formatScore } from "../../../../utils";
 import BattingTable from "./BattingTable";
 import BowlingTable from "./BowlingTable";
 
-export default function InningsCard({ innings }) {
+export default function InningsCard({ innings, score }) {
+  const displayScore = score || innings;
+
   return (
     <div className="bg-cbcard rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-white font-bold text-sm">{innings.batting_team}</h3>
         <span className="text-cbaccent font-bold text-sm">
-          {formatScore(innings.runs, innings.wickets, innings.overs)}
+          {formatScore(
+            displayScore.runs,
+            displayScore.wickets,
+            displayScore.overs,
+          )}
         </span>
       </div>
 

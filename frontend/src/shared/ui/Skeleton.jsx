@@ -103,6 +103,36 @@ export function ScorecardSkeleton() {
   );
 }
 
+export function MatchSummarySkeleton() {
+  return (
+    <div
+      className="bg-cbcard rounded-xl p-5 mb-4"
+      role="status"
+      aria-label="Loading match summary"
+    >
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-2">
+          <SkeletonBlock className="h-2 w-2 rounded-full" />
+          <SkeletonBlock className="h-3 w-36" />
+        </div>
+        <SkeletonBlock className="h-5 w-12 rounded" />
+      </div>
+      <div className="space-y-3 mb-5">
+        <div className="flex items-center justify-between">
+          <SkeletonBlock className="h-5 w-32" />
+          <SkeletonBlock className="h-5 w-24" />
+        </div>
+        <div className="flex items-center justify-between">
+          <SkeletonBlock className="h-5 w-36" />
+          <SkeletonBlock className="h-5 w-24" />
+        </div>
+      </div>
+      <SkeletonBlock className="h-3 w-2/3" />
+      <SkeletonBlock className="h-3 w-1/2 mt-3" />
+    </div>
+  );
+}
+
 export function MatchDetailSkeleton() {
   return (
     <div
@@ -110,27 +140,7 @@ export function MatchDetailSkeleton() {
       role="status"
       aria-label="Loading match details"
     >
-      <div className="bg-cbcard rounded-xl p-5 mb-4">
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2">
-            <SkeletonBlock className="h-2 w-2 rounded-full" />
-            <SkeletonBlock className="h-3 w-36" />
-          </div>
-          <SkeletonBlock className="h-5 w-12 rounded" />
-        </div>
-        <div className="space-y-3 mb-5">
-          <div className="flex items-center justify-between">
-            <SkeletonBlock className="h-5 w-32" />
-            <SkeletonBlock className="h-5 w-24" />
-          </div>
-          <div className="flex items-center justify-between">
-            <SkeletonBlock className="h-5 w-36" />
-            <SkeletonBlock className="h-5 w-24" />
-          </div>
-        </div>
-        <SkeletonBlock className="h-3 w-2/3" />
-        <SkeletonBlock className="h-3 w-1/2 mt-3" />
-      </div>
+      <MatchSummarySkeleton />
       <ScorecardSkeleton />
     </div>
   );

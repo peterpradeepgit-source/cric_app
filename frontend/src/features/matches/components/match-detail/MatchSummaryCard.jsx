@@ -1,8 +1,13 @@
+import { MatchSummarySkeleton } from "../../../../shared/ui/Skeleton";
 import MatchMetadata from "./MatchMetadata";
 import MatchSummaryHeader from "./MatchSummaryHeader";
 import TeamScoreSummary from "./TeamScoreSummary";
 
-export default function MatchSummaryCard({ match }) {
+export default function MatchSummaryCard({ loading = false, match }) {
+  if (loading) {
+    return <MatchSummarySkeleton />;
+  }
+
   return (
     <div className="bg-cbcard rounded-xl p-5 mb-4">
       <MatchSummaryHeader match={match} />
