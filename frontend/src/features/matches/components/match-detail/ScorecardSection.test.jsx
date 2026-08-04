@@ -46,4 +46,76 @@ describe("ScorecardSection", () => {
     expect(screen.getByText("India")).toBeInTheDocument();
     expect(screen.getByText("180-6 (20)")).toBeInTheDocument();
   });
+
+  it("renders the second innings first for live scorecards", () => {
+    render(
+      <ScorecardSection
+        match={{
+          status: "live",
+          scorecard: {
+            innings: [
+              {
+                batting_team: "India",
+                runs: 180,
+                wickets: 6,
+                overs: 20,
+                batting: [],
+                bowling: [],
+              },
+              {
+                batting_team: "Australia",
+                runs: 90,
+                wickets: 2,
+                overs: 10,
+                batting: [],
+                bowling: [],
+              },
+            ],
+          },
+        }}
+      />,
+    );
+
+    const inningsHeadings = screen.getAllByRole("heading", { level: 3 });
+    expect(inningsHeadings.map((heading) => heading.textContent)).toEqual([
+      "Australia",
+      "India",
+    ]);
+  });
+
+  it("keeps innings order for non-live scorecards", () => {
+    render(
+      <ScorecardSection
+        match={{
+          status: "completed",
+          scorecard: {
+            innings: [
+              {
+                batting_team: "India",
+                runs: 180,
+                wickets: 6,
+                overs: 20,
+                batting: [],
+                bowling: [],
+              },
+              {
+                batting_team: "Australia",
+                runs: 160,
+                wickets: 10,
+                overs: 18.4,
+                batting: [],
+                bowling: [],
+              },
+            ],
+          },
+        }}
+      />,
+    );
+
+    const inningsHeadings = screen.getAllByRole("heading", { level: 3 });
+    expect(inningsHeadings.map((heading) => heading.textContent)).toEqual([
+      "India",
+      "Australia",
+    ]);
+  });
 });

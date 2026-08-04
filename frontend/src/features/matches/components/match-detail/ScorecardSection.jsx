@@ -1,4 +1,5 @@
 import { ScorecardSkeleton } from "../../../../shared/ui/Skeleton";
+import { getDisplayInnings } from "../../utils/scorecard";
 import InningsCard from "./InningsCard";
 
 export default function ScorecardSection({ loading = false, match }) {
@@ -22,7 +23,7 @@ export default function ScorecardSection({ loading = false, match }) {
 
   return (
     <div className="space-y-4">
-      {innings.map((inn, i) => (
+      {getDisplayInnings(innings, match.status).map((inn, i) => (
         <InningsCard key={`${inn.batting_team}-${i}`} innings={inn} />
       ))}
     </div>

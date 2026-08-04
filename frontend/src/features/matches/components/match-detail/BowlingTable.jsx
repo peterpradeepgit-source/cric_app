@@ -1,4 +1,4 @@
-import { ballsToOvers } from "../../lib/scorecard";
+import { ballsToOvers } from "../../utils/scorecard";
 
 export default function BowlingTable({ rows }) {
   return (

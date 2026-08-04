@@ -29,6 +29,17 @@ const match = {
         fall_of_wickets: [{ score: "120-3", batter: "Virat Kohli" }],
         batting: [
           {
+            batter: "Non Striker",
+            dismissal: "",
+            runs: 21,
+            balls: 18,
+            fours: 2,
+            sixes: 0,
+            strike_rate: 116.666,
+            is_batting: false,
+            is_out: false,
+          },
+          {
             batter: "Waiting Batter",
             dismissal: "",
             runs: 0,
@@ -87,12 +98,15 @@ describe("MatchDetail", () => {
 
     expect(onBack).toHaveBeenCalledTimes(1);
     expect(screen.getByText("Champions Trophy")).toBeInTheDocument();
+    expect(screen.getByText("Current Players")).toBeInTheDocument();
     expect(screen.getAllByText("245-6 (48)").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Toss: India chose to bat")).toBeInTheDocument();
     expect(screen.getByText("Extras: 12")).toBeInTheDocument();
     expect(screen.getByText("Yet to bat: Kuldeep Yadav")).toBeInTheDocument();
     expect(screen.getByText("120-3 (Virat Kohli)")).toBeInTheDocument();
-    expect(screen.getByText("Trent Boult")).toBeInTheDocument();
+    expect(screen.getAllByText("Trent Boult").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("68 (50)")).toBeInTheDocument();
+    expect(screen.getByText("21 (18)")).toBeInTheDocument();
     expect(screen.getByText("2.5")).toBeInTheDocument();
   });
 
@@ -102,6 +116,6 @@ describe("MatchDetail", () => {
     const rows = screen.getAllByRole("row").slice(1, 4);
     expect(within(rows[0]).getByText("Out Batter")).toBeInTheDocument();
     expect(within(rows[1]).getByText("Current Batter")).toBeInTheDocument();
-    expect(within(rows[2]).getByText("Waiting Batter")).toBeInTheDocument();
+    expect(within(rows[2]).getByText("Non Striker")).toBeInTheDocument();
   });
 });

@@ -1,4 +1,4 @@
-import { sortBattersByState } from "../../lib/scorecard";
+import { sortBattersByState } from "../../utils/scorecard";
 
 export default function BattingTable({ rows }) {
   const sortedRows = sortBattersByState(rows);
