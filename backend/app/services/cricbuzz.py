@@ -95,10 +95,10 @@ async def fetch_live_matches() -> list[Match]:
         score_first_innings_index= 0 
         while i < len(parts):
             part = parts[i]
-            score_match = re.match(r"^(\d+)-(\d+)\s*\((.+?)\)", part)
+            score_match = re.match(r"^(\d+)(?:-(\d+))?\s*\((.+?)\)", part)
             if score_match and i >= 2:
                 runs = int(score_match.group(1))
-                wickets = int(score_match.group(2))
+                wickets = int(score_match.group(2)) if score_match.group(2) is not None else 0
                 overs = _parse_overs(score_match.group(3))
                 team_name = parts[i - 2]
                 score_first_innings_index = i
@@ -133,20 +133,21 @@ async def fetch_live_matches() -> list[Match]:
 
         status = _determine_status(status_text)
 
-        matches.append(
-            Match(
-                id=f"cb-{match_id}",
-                teams=[s.team for s in scores],
-                scores=scores,
-                status=status,
-                status_text=status_text or match_info,
-                result=status_text if status == "completed" else None,
-                venue=venue,
-                 series=series,
-                match_type=match_type,
-                summary=status_text,
+        if not status=="completed":
+            matches.append(
+                Match(
+                    id=f"cb-{match_id}",
+                    teams=[s.team for s in scores],
+                    scores=scores,
+                    status=status,
+                    status_text=status_text or match_info,
+                    result=status_text if status == "completed" else None,
+                    venue=venue,
+                    series=series,
+                    match_type=match_type,
+                    summary=status_text,
+                )
             )
-        )
 
     return matches
 
