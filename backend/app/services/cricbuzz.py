@@ -96,7 +96,6 @@ async def fetch_live_matches() -> list[Match]:
         while i < len(parts):
             part = parts[i]
             score_match = re.match(r"^(\d+)-(\d+)\s*\((.+?)\)", part)
-            print(f"Processing part: {part}, score_match: {score_match}, i: {i}")
             if score_match and i >= 2:
                 runs = int(score_match.group(1))
                 wickets = int(score_match.group(2))
@@ -118,7 +117,7 @@ async def fetch_live_matches() -> list[Match]:
                 status_text = part
             i += 1
 
-        if(len(scores) == 1 and not status_text):
+        if(len(scores) == 1):
             if (score_first_innings_index >= 1):
                 scores.append(
                     TeamScore(
@@ -143,7 +142,7 @@ async def fetch_live_matches() -> list[Match]:
                 status_text=status_text or match_info,
                 result=status_text if status == "completed" else None,
                 venue=venue,
-                series=series,
+                 series=series,
                 match_type=match_type,
                 summary=status_text,
             )
