@@ -69,7 +69,7 @@ class Match(BaseModel):
     status_text: str = ""
     result: Optional[str] = None
     venue: str = ""
-    date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    date: Optional[datetime] = None
     series: str = ""
     match_type: str = Field(default="T20", pattern="^(T20|ODI|Test)$")
     summary: Optional[str] = None
