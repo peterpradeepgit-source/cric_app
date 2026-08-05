@@ -17,7 +17,7 @@ export default function MatchSummaryCard({ loading = false, match }) {
         <p className="text-sm text-gray-300 mb-1">{match.status_text}</p>
       )}
       {match.result && (
-        <p className="text-sm text-cbgreen font-medium">{match.result}</p>
+        <p className="text-sm text-cbcompleted font-medium">{match.result}</p>
       )}
 
       <MatchMetadata match={match} />

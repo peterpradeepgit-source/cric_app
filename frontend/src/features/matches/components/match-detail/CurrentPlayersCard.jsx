@@ -6,14 +6,14 @@ function BatterRow({ batter, isPrimary }) {
       <div className="min-w-0 flex items-center gap-2">
         <span
           className={`h-2 w-2 shrink-0 rounded-full ${
-            isPrimary ? "bg-cbaccent" : "bg-gray-600"
+            isPrimary ? "bg-cblive" : "bg-cbmuted/50"
           }`}
         />
         <span className="truncate text-sm font-semibold text-white">
           {batter.batter}
         </span>
       </div>
-      <span className="shrink-0 text-sm font-bold text-cbaccent">
+      <span className="shrink-0 text-sm font-bold text-cblive">
         {batter.runs} ({batter.balls})
       </span>
     </div>
@@ -28,7 +28,7 @@ function BowlerRow({ bowler }) {
       <span className="truncate text-sm font-semibold text-white">
         {bowler.bowler}
       </span>
-      <span className="shrink-0 text-sm font-bold text-cbaccent">
+      <span className="shrink-0 text-sm font-bold text-cbwicket">
         {ballsToOvers(bowler.balls)}-{bowler.maidens}-{bowler.runs}-
         {bowler.wickets}
       </span>
@@ -45,7 +45,7 @@ export default function CurrentPlayersCard({ match }) {
     <section className="bg-cbcard rounded-xl p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-sm font-bold text-white">Now Playing</h2>
-        <span className="text-xs font-bold uppercase tracking-wide text-red-400">
+        <span className="text-xs font-bold uppercase tracking-wide text-cblive">
           Live
         </span>
       </div>

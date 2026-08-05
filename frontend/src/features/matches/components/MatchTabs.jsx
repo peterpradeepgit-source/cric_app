@@ -1,22 +1,24 @@
 import { MATCH_TABS } from "../constants";
 
-export default function MatchTabs({ activeTab, onTabChange }) {
+export default function MatchTabs({ activeTab, activeCount, onTabChange }) {
   return (
-    <nav className="sticky top-[52px] z-30 bg-cbdark/95 backdrop-blur border-b border-gray-800/60">
-      <div className="max-w-5xl mx-auto px-4 flex gap-1">
+    <nav className="md:hidden">
+      <div className="grid grid-cols-3 gap-1 rounded-xl border border-cbborder bg-cbcard p-1">
         {MATCH_TABS.map((tab) => (
           <button
             key={tab.key}
             onClick={() => onTabChange(tab.key)}
-            className={`relative px-4 py-3 text-sm font-medium transition-colors ${
+            className={`flex min-h-11 items-center justify-center gap-2 rounded-lg px-2 text-sm font-medium transition-colors ${
               activeTab === tab.key
-                ? "text-cbaccent"
-                : "text-gray-400 hover:text-white"
+                ? "bg-cbaccent text-cbonaccent"
+                : "text-cbmuted hover:bg-cbsurface hover:text-cbtext"
             }`}
           >
             {tab.label}
             {activeTab === tab.key && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-cbaccent rounded-t" />
+              <span className="rounded-full bg-white/15 px-1.5 text-xs">
+                {activeCount}
+              </span>
             )}
           </button>
         ))}

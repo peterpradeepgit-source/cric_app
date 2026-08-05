@@ -9,9 +9,9 @@ export function formatMatchType(type) {
 }
 
 export function getStatusColor(status) {
-  if (status === 'live') return 'bg-red-500';
-  if (status === 'upcoming') return 'bg-blue-500';
-  return 'bg-gray-500';
+  if (status === 'live') return 'bg-cblive';
+  if (status === 'upcoming') return 'bg-cbupcoming';
+  return 'bg-cbcompleted';
 }
 
 export function formatDate(dateStr) {

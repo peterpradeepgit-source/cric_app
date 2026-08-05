@@ -7,7 +7,7 @@ export default function TeamScoreRow({ score, team }) {
       {score && (
         <span
           className={`text-sm font-bold ${
-            score.overs > 0 ? "text-cbaccent" : "text-gray-600"
+            score.overs > 0 ? "text-cblive" : "text-gray-600"
           }`}
         >
           {formatScore(score.runs, score.wickets, score.overs)}

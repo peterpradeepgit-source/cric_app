@@ -10,6 +10,18 @@ export const MATCH_TABS = [
   { key: "recent", label: "Recent" },
 ];
 
+export const MATCH_TYPE_FILTERS = [
+  { key: "all", label: "All" },
+  { key: "T20", label: "T20" },
+  { key: "ODI", label: "ODI" },
+  { key: "Test", label: "Test" },
+];
+
+export const MATCH_LAYOUTS = [
+  { key: "list", label: "List" },
+  { key: "cards", label: "Cards" },
+];
+
 export const MATCH_FETCHERS = {
   live: getLiveMatches,
   upcoming: getUpcomingMatches,

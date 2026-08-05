@@ -7,7 +7,7 @@ export default function TeamScoreSummary({ scores, teams }) {
         <div key={`${team}-${index}`} className="flex items-center justify-between">
           <span className="text-lg font-bold text-white">{team}</span>
           {scores[index] && (
-            <span className="text-lg font-bold text-cbaccent">
+            <span className="text-lg font-bold text-cblive">
               {formatScore(
                 scores[index].runs,
                 scores[index].wickets,

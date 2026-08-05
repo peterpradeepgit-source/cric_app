@@ -13,9 +13,9 @@ describe("formatting utilities", () => {
   });
 
   it("maps match status to theme classes", () => {
-    expect(getStatusColor("live")).toBe("bg-red-500");
-    expect(getStatusColor("upcoming")).toBe("bg-blue-500");
-    expect(getStatusColor("completed")).toBe("bg-gray-500");
+    expect(getStatusColor("live")).toBe("bg-cblive");
+    expect(getStatusColor("upcoming")).toBe("bg-cbupcoming");
+    expect(getStatusColor("completed")).toBe("bg-cbcompleted");
   });
 
   it("returns an empty date label for missing or invalid dates", () => {

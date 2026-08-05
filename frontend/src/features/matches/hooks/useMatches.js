@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { LIVE_REFRESH_MS, MATCH_FETCHERS } from "../constants";
+import { getMatchesForTab } from "../utils/matchStatus";
 
 export default function useMatches(activeTab, selectedMatch) {
   const [matches, setMatches] = useState([]);
@@ -13,7 +14,7 @@ export default function useMatches(activeTab, selectedMatch) {
 
     return MATCH_FETCHERS[activeTab]()
       .then((data) => {
-        setMatches(data);
+        setMatches(getMatchesForTab(activeTab, data));
         setLastUpdated(new Date());
       })
       .catch((e) => setError(e.message))
@@ -28,7 +29,7 @@ export default function useMatches(activeTab, selectedMatch) {
     MATCH_FETCHERS[activeTab]()
       .then((data) => {
         if (!active) return;
-        setMatches(data);
+        setMatches(getMatchesForTab(activeTab, data));
         setLastUpdated(new Date());
       })
       .catch((e) => {
@@ -49,7 +50,7 @@ export default function useMatches(activeTab, selectedMatch) {
     const id = setInterval(() => {
       MATCH_FETCHERS.live()
         .then((data) => {
-          setMatches(data);
+          setMatches(getMatchesForTab("live", data));
           setLastUpdated(new Date());
         })
         .catch(() => {});

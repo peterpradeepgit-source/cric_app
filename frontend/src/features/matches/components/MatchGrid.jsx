@@ -1,10 +1,20 @@
 import MatchCard from "./match-card/MatchCard";
 
-export default function MatchGrid({ matches, onMatchClick }) {
+export default function MatchGrid({ layout = "list", matches, onMatchClick }) {
+  const gridClass =
+    layout === "cards"
+      ? "grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+      : "space-y-3";
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className={gridClass} aria-label={`${layout} match layout`}>
       {matches.map((match) => (
-        <MatchCard key={match.id} match={match} onClick={onMatchClick} />
+        <MatchCard
+          key={match.id}
+          layout={layout}
+          match={match}
+          onClick={onMatchClick}
+        />
       ))}
     </div>
   );

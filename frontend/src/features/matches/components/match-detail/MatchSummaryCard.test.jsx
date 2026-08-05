@@ -12,6 +12,8 @@ const match = {
     { runs: 90, wickets: 2, overs: 20 },
   ],
   status_text: "India lead by 30 runs",
+  venue: "Eden Gardens",
+  date: "2026-08-04T14:00:00Z",
 };
 
 describe("MatchSummaryCard", () => {
@@ -20,6 +22,24 @@ describe("MatchSummaryCard", () => {
 
     expect(screen.getByText("Border Trophy")).toBeInTheDocument();
     expect(screen.getByText("120-3 (28)")).toBeInTheDocument();
+  });
+
+  it("hides the match date for live match metadata", () => {
+    render(<MatchSummaryCard match={match} />);
+
+    expect(screen.getByText("📍 Eden Gardens")).toBeInTheDocument();
+    expect(screen.queryByText(/Aug/)).not.toBeInTheDocument();
+  });
+
+  it("shows the match date for completed match metadata", () => {
+    render(
+      <MatchSummaryCard
+        match={{ ...match, status: "completed", result: "India won by 30 runs" }}
+      />,
+    );
+
+    expect(screen.getByText("📍 Eden Gardens")).toBeInTheDocument();
+    expect(screen.getByText(/Aug/)).toBeInTheDocument();
   });
 
   it("renders a skeleton instead of fallback score data while loading", () => {

@@ -8,6 +8,7 @@ import {
   getUpcomingMatches,
 } from "./api";
 import App from "./App";
+import { ThemeProvider } from "./theme/ThemeContext";
 
 vi.mock("./api", () => ({
   getLiveMatches: vi.fn(),
@@ -52,10 +53,18 @@ describe("App routing integration", () => {
     vi.clearAllMocks();
   });
 
-  it("opens a match detail route from the main list and returns to the list", async () => {
-    render(<App />);
+  function renderApp() {
+    return render(
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>,
+    );
+  }
 
-    await screen.findByText("List Series");
+  it("opens a match detail route from the main list and returns to the list", async () => {
+    renderApp();
+
+    await screen.findByText("India");
     await userEvent.click(screen.getByText("India"));
 
     expect(window.location.pathname).toBe("/matches/match-1");
@@ -64,13 +73,13 @@ describe("App routing integration", () => {
 
     await userEvent.click(screen.getByText("Back"));
     expect(window.location.pathname).toBe("/");
-    await screen.findByText("List Series");
+    await screen.findByText("India");
   });
 
   it("renders a direct detail URL without visiting the main page first", async () => {
     window.history.pushState(null, "", "/matches/match-1");
 
-    render(<App />);
+    renderApp();
 
     expect(
       screen.getByRole("status", { name: "Loading match details" }),
@@ -80,12 +89,14 @@ describe("App routing integration", () => {
   });
 
   it("switches tabs on the list page and fetches the selected tab", async () => {
-    render(<App />);
+    renderApp();
 
-    await screen.findByText("List Series");
-    await userEvent.click(screen.getByText("Recent"));
+    await screen.findByText("India");
+    await userEvent.click(screen.getAllByText("Recent")[0]);
 
     await waitFor(() => expect(getRecentMatches).toHaveBeenCalledTimes(1));
-    expect(screen.getByText("No recent matches at the moment.")).toBeInTheDocument();
+    expect(
+      screen.getByText("No recent matches at the moment."),
+    ).toBeInTheDocument();
   });
 });

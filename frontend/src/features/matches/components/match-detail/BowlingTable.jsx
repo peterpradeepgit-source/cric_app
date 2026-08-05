@@ -26,7 +26,7 @@ export default function BowlingTable({ rows }) {
             >
               <td className="py-2 pr-2 text-white font-medium">
                 {b.bowler}
-                {b.is_bowling && <span className="text-cbaccent"> *</span>}
+                {b.is_bowling && <span className="text-cblive"> *</span>}
               </td>
               <td className="py-2 px-2 text-right text-gray-300">
                 {ballsToOvers(b.balls)}

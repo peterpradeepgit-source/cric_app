@@ -29,7 +29,7 @@ export default function BattingTable({ rows }) {
             >
               <td className="py-2 pr-2 text-white font-medium">
                 {b.batter}
-                {b.is_batting && <span className="text-cbaccent"> *</span>}
+                {b.is_batting && <span className="text-cblive"> *</span>}
               </td>
               <td className="py-2 px-2 text-gray-400">
                 {b.dismissal || (b.is_batting ? "not out" : "")}

@@ -9,7 +9,7 @@ export default function InningsCard({ innings, score }) {
     <div className="bg-cbcard rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-white font-bold text-sm">{innings.batting_team}</h3>
-        <span className="text-cbaccent font-bold text-sm">
+        <span className="text-cblive font-bold text-sm">
           {formatScore(
             displayScore.runs,
             displayScore.wickets,

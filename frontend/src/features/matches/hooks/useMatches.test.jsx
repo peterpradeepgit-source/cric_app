@@ -1,4 +1,5 @@
 import { act, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getLiveMatches, getRecentMatches } from "../../../api";
 import { LIVE_REFRESH_MS } from "../constants";
@@ -43,6 +44,35 @@ describe("useMatches", () => {
     expect(screen.getByText("updated: yes")).toBeInTheDocument();
   });
 
+  it("keeps only live matches in the live tab", async () => {
+    getLiveMatches.mockResolvedValue([
+      { id: "live-1", status: "live" },
+      { id: "live-2", status: " LIVE " },
+      { id: "done-1", status: "completed" },
+      { id: "upcoming-1", status: "upcoming" },
+    ]);
+
+    render(<MatchesProbe activeTab="live" />);
+
+    await screen.findByText("count: 2");
+  });
+
+  it("filters live matches on manual refresh", async () => {
+    getLiveMatches.mockResolvedValueOnce([{ id: "live-1", status: "live" }]);
+    getLiveMatches.mockResolvedValueOnce([
+      { id: "live-2", status: "live" },
+      { id: "live-3", status: "LIVE" },
+      { id: "done-1", status: "completed" },
+    ]);
+
+    render(<MatchesProbe activeTab="live" />);
+    await screen.findByText("count: 1");
+
+    await userEvent.click(screen.getByText("Refresh"));
+
+    await screen.findByText("count: 2");
+  });
+
   it("surfaces load errors", async () => {
     getRecentMatches.mockRejectedValue(new Error("API error: 503"));
 
@@ -54,16 +84,22 @@ describe("useMatches", () => {
 
   it("auto-refreshes live matches only when no detail route is selected", async () => {
     vi.useFakeTimers();
-    getLiveMatches.mockResolvedValue([]);
+    getLiveMatches.mockResolvedValueOnce([{ id: "live-1", status: "live" }]);
+    getLiveMatches.mockResolvedValueOnce([
+      { id: "live-2", status: "live" },
+      { id: "done-1", status: "completed" },
+    ]);
 
     const { rerender } = render(<MatchesProbe activeTab="live" />);
     await act(async () => {});
+    expect(screen.getByText("count: 1")).toBeInTheDocument();
     expect(getLiveMatches).toHaveBeenCalledTimes(1);
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(LIVE_REFRESH_MS);
     });
     expect(getLiveMatches).toHaveBeenCalledTimes(2);
+    expect(screen.getByText("count: 1")).toBeInTheDocument();
 
     rerender(<MatchesProbe activeTab="live" selectedMatch="match-1" />);
     await act(async () => {});

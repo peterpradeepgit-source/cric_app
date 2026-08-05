@@ -1,7 +1,7 @@
 function SkeletonBlock({ className = "" }) {
   return (
     <div
-      className={`animate-pulse rounded bg-gray-700/50 ${className}`}
+      className={`animate-pulse rounded bg-cbmuted/25 ${className}`}
       aria-hidden="true"
     />
   );
@@ -29,7 +29,7 @@ export function MatchCardSkeleton() {
         </div>
       </div>
 
-      <div className="mt-4 pt-3 border-t border-gray-700/50">
+      <div className="mt-4 pt-3 border-t border-cbborder">
         <SkeletonBlock className="h-3 w-3/4" />
       </div>
       <SkeletonBlock className="h-3 w-1/2 mt-3" />
@@ -40,7 +40,7 @@ export function MatchCardSkeleton() {
 export function MatchCardGridSkeleton({ count = 6 }) {
   return (
     <div
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+      className="space-y-3"
       role="status"
       aria-label="Loading matches"
     >
@@ -55,12 +55,12 @@ function ScoreTableSkeleton({ rows = 6 }) {
   return (
     <div className="overflow-x-auto">
       <div className="min-w-full">
-        <div className="grid grid-cols-[1.6fr_1.2fr_repeat(5,0.5fr)] gap-3 border-b border-gray-700/50 pb-2">
+        <div className="grid grid-cols-[1.6fr_1.2fr_repeat(5,0.5fr)] gap-3 border-b border-cbborder pb-2">
           {Array.from({ length: 7 }, (_, index) => (
             <SkeletonBlock key={index} className="h-3" />
           ))}
         </div>
-        <div className="divide-y divide-gray-800/40">
+        <div className="divide-y divide-cbborder">
           {Array.from({ length: rows }, (_, rowIndex) => (
             <div
               key={rowIndex}

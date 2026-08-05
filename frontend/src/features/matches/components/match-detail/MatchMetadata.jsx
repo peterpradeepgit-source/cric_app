@@ -1,11 +1,14 @@
 import { formatDate } from "../../../../utils";
+import { normalizeMatchStatus } from "../../utils/matchStatus";
 
 export default function MatchMetadata({ match }) {
+  const showDate = normalizeMatchStatus(match.status) !== "live";
+
   return (
     <>
       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-gray-500">
         {match.venue && <span>📍 {match.venue}</span>}
-        {match.date && <span>📅 {formatDate(match.date)}</span>}
+        {showDate && match.date && <span>📅 {formatDate(match.date)}</span>}
       </div>
 
       {match.scorecard?.toss && (
