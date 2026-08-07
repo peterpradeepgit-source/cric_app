@@ -1,4 +1,5 @@
 import json
+from logging import info
 import re
 from datetime import datetime, timezone
 from typing import Optional
@@ -151,12 +152,30 @@ async def fetch_live_matches() -> list[Match]:
 
     return matches
 
+def extract_match_times(page_html: str) -> dict[str, int]:
+    match_times: dict[str, int] = {}
+    pattern = re.compile(r'\\"?matchInfo\\"?\s*:\s*\{.*?'
+                        r'\\"?matchId\\"?\s*:\s*(\d+).*?'
+                        r'\\"?startDate\\"?\s*:\s*"?(\d+)"?',
+                        re.DOTALL,)
+    for match in pattern.finditer(page_html):
+        match_id = match.group(1)
+        start_ms = int(match.group(2))
+        print(f"Found match {match_id} starting at {start_ms}")
+        if match_id in match_times:
+            continue
+        match_times[match_id] = start_ms
+        print(f"Added match times {match_times}")
+
+    return match_times
 
 async def fetch_upcoming_matches() -> list[Match]:
     """Scrape upcoming match schedule from Cricbuzz."""
     async with httpx.AsyncClient() as client:
         resp = await client.get(SCHEDULE_URL, headers=HEADERS, timeout=15.0)
         resp.raise_for_status()
+    
+    match_time_map = extract_match_times(resp.text)
 
     soup = BeautifulSoup(resp.text, "lxml")
     matches: list[Match] = []
@@ -181,6 +200,7 @@ async def fetch_upcoming_matches() -> list[Match]:
         href_parts = a["href"].split("/")
         if len(href_parts) >= 3:
             raw_id = href_parts[2]
+            time_upcoming = match_time_map.get(raw_id)
         else:
             continue
 
@@ -220,8 +240,8 @@ async def fetch_upcoming_matches() -> list[Match]:
         if prev_date:
             date_str = prev_date.strip()
 
-        match_type = _guess_match_type(match_desc)
-
+        match_type = _guess_match_type(match_desc)    
+        
         matches.append(
             Match(
                 id=f"cb-{raw_id}",
@@ -230,7 +250,8 @@ async def fetch_upcoming_matches() -> list[Match]:
                 status="upcoming",
                 status_text=f"Upcoming - {date_str}" if date_str else "Upcoming",
                 venue=venue,
-                date=datetime.now(timezone.utc),
+                #date=datetime.now(timezone.utc),
+                date=time_upcoming,
                 series=series,
                 match_type=match_type,
                 summary=match_desc,
