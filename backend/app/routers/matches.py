@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 
 from app.data import MOCK_MATCHES
 from app.models import Match
-from app.services.cricbuzz import fetch_live_matches, fetch_upcoming_matches, fetch_scorecard
+from app.services.cricbuzz import fetch_live_matches, fetch_upcoming_matches, fetch_recent_matches, fetch_scorecard
 
 
 router = APIRouter(prefix="/matches", tags=["matches"])
@@ -32,6 +32,12 @@ async def get_upcoming_matches() -> list[Match]:
 
 @router.get("/recent", response_model=list[Match])
 async def get_recent_matches() -> list[Match]:
+    try:
+        recent = await fetch_recent_matches()
+        if recent:
+            return recent
+    except Exception:
+        pass
     return [m for m in MOCK_MATCHES if m.status == "completed"]
 
 
