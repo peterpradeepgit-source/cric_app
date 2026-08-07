@@ -26,3 +26,13 @@ export function formatDate(dateStr) {
     hour12: true,
   });
 }
+
+export function formatDateWithoutTime(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  });
+}

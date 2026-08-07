@@ -260,6 +260,58 @@ async def fetch_upcoming_matches() -> list[Match]:
 
     return matches
 
+async def fetch_recent_matches() -> list[Match]:
+    """Scrape recent match results from Cricbuzz."""
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(RECENT_URL, headers=HEADERS, timeout=15.0)
+        resp.raise_for_status()
+
+    soup = BeautifulSoup(resp.text, "lxml")
+    matches: list[Match] = []
+    seen_ids: set[str] = set()
+
+    for a in soup.find_all("a", href=True):
+        if "/cricket-scorecard-archives/" not in a["href"]:
+            continue
+
+        text = a.get_text(separator="|", strip=True)
+        parts = [p.strip() for p in text.split("|") if p.strip()]
+
+        # Only parse entries with at least 5 parts (team1, vs, team2, , result)
+        if len(parts) < 5 or parts[1] != "vs" or parts[3] != ",":
+            continue
+
+        match_id = a["href"].split("/")[2]
+        if match_id in seen_ids:
+            continue
+        seen_ids.add(match_id)
+
+        team_a = parts[0]
+        team_b = parts[2]
+        teams = [team_a, team_b]
+
+        result = parts[4] if len(parts) > 4 else ""
+        match_desc = parts[5] if len(parts) > 5 else ""
+        venue_parts = [p for p in parts[6:] if p != ","]
+        venue = ", ".join(venue_parts) if venue_parts else ""
+
+        match_type = _guess_match_type(match_desc)
+
+        matches.append(
+            Match(
+                id=f"cb-{match_id}",
+                teams=teams,
+                scores=[],
+                status="completed",
+                status_text=result,
+                result=result,
+                venue=venue,
+                series="",
+                match_type=match_type,
+                summary=match_desc,
+            )
+        )
+        return matches
 
 SCORECARD_BASE = "https://www.cricbuzz.com/live-cricket-scorecard"
 
