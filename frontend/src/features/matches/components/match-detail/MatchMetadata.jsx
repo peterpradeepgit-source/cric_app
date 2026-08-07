@@ -1,4 +1,4 @@
-import { formatDate } from "../../../../utils";
+import { formatDate, formatDateWithoutTime } from "../../../../utils";
 import { normalizeMatchStatus } from "../../utils/matchStatus";
 
 export default function MatchMetadata({ match }) {
@@ -8,7 +8,7 @@ export default function MatchMetadata({ match }) {
     <>
       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3 text-xs text-gray-500">
         {match.venue && <span>📍 {match.venue}</span>}
-        {showDate && match.date && <span>📅 {formatDate(match.date)}</span>}
+        {showDate && match.date && <span>📅 {match.status==='completed' ? formatDateWithoutTime(match.date) : formatDate(match.date)}</span>}
       </div>
 
       {match.scorecard?.toss && (

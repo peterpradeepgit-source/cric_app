@@ -27,8 +27,8 @@ function ScoreColumn({ compact = false, scores }) {
             key={`${score.team || "score"}-${index}`}
             className={`font-bold ${
               index === 0
-                ? `${compact ? "text-2xl" : "text-3xl"} text-cblive`
-                : `${compact ? "text-xl" : "text-2xl"} text-cbcompleted`
+                ? `${compact ? "text-xl" : "text-2xl"} text-cblive`
+                : `${compact ? "text-lg" : "text-xl"} text-cbcompleted`
             }`}
           >
             {formatScore(score.runs, score.wickets, score.overs)}
