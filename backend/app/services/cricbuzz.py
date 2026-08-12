@@ -16,7 +16,7 @@ HEADERS = {
 }
 
 LIVE_URL = "https://www.cricbuzz.com/cricket-match/live-scores"
-SCHEDULE_URL = "https://www.cricbuzz.com/cricket-schedule/upcoming-series/international"
+SCHEDULE_URL = "https://www.cricbuzz.com/cricket-schedule/upcoming-series/all"
 RECENT_URL = "https://www.cricbuzz.com/cricket-scorecard-archives"
 
 
@@ -250,18 +250,32 @@ async def fetch_live_matches() -> list[Match]:
 
 def extract_match_times(page_html: str) -> dict[str, int]:
     match_times: dict[str, int] = {}
-    pattern = re.compile(r'\\"?matchInfo\\"?\s*:\s*\{.*?'
-                        r'\\"?matchId\\"?\s*:\s*(\d+).*?'
-                        r'\\"?startDate\\"?\s*:\s*"?(\d+)"?',
-                        re.DOTALL,)
-    for match in pattern.finditer(page_html):
+    html = page_html.replace('\\"', '"')
+
+    match_id_pattern = re.compile(
+        r'"matchId"\s*:\s*(\d+)'
+    )
+
+    for match in match_id_pattern.finditer(html):
         match_id = match.group(1)
-        start_ms = int(match.group(2))
-        # print(f"Found match {match_id} starting at {start_ms}")
+
         if match_id in match_times:
             continue
-        match_times[match_id] = start_ms
-        # print(f"Added match times {match_times}")
+
+        start = max(0, match.start() - 500)
+        end = min(len(html), match.end() + 5000)
+
+        section = html[start:end]
+
+        start_date_match = re.search(
+            r'"startDate"\s*:\s*"?(\d+)"?',
+            section,
+        )
+
+        if not start_date_match:
+            continue
+
+        match_times[match_id] = int(start_date_match.group(1))
 
     return match_times
 
@@ -296,7 +310,7 @@ async def fetch_upcoming_matches() -> list[Match]:
         href_parts = a["href"].split("/")
         if len(href_parts) >= 3:
             raw_id = href_parts[2]
-            time_upcoming = match_time_map.get(raw_id)
+            time_upcoming = match_time_map.get(raw_id)            
         else:
             continue
 
